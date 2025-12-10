@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Общежитие - Система управления</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+            color: #333;
+            line-height: 1.5;
+        }
+        
+        /* Шапка */
+        .header {
+            background-color: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 16px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .main-nav {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: #8f0d0d;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 10px 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .btn-login {
+            background-color: #fff;
+            color: #333;
+        }
+        
+        .btn-login:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .btn-primary {
+            background-color: #000000;
+            color: white;
+            border-color: #000000;
+        }
+        
+        .btn-primary:hover {
+            background-color: #8f0d0d;
+            border-color: #8f0d0d;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            margin-top: 80px;
+        }
+        
+        /* Герой-секция */
+        .hero {
+            background-color: #8f0d0d;;
+            padding: 80px 0;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .hero-title {
+            font-size: 48px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #ffffff;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: #c4bebe;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        /* Преимущества */
+        .features {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .section-title {
+            font-size: 32px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 48px;
+            color: #1a1a1a;
+        }
+        
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 32px 24px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        
+        .feature-icon {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a73e8;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        
+        .feature-desc {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Ближайшие мероприятия */
+        .events {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .events-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+        }
+        
+        .view-all {
+            text-decoration: none;
+            color: #8f0d0d;
+            font-weight: 500;
+        }
+        
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .event-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 24px;
+        }
+        
+        .event-date {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .event-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        
+        .event-details {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .event-detail {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .event-points {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #e6f4ea;
+            color: #137333;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Объявления */
+        .announcements {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+        
+        .announcements-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .announcements-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .announcement-card {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 24px;
+        }
+        
+        .announcement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+        
+        .announcement-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .announcement-date {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .announcement-text {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Кто пользуется */
+        .users {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .users-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            text-align: center;
+        }
+        
+        .users-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-top: 48px;
+        }
+        
+        .user-card {
+            padding: 24px;
+        }
+        
+        .user-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+        }
+        
+        .user-desc {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Подвал */
+        .footer {
+            background-color: #fff;
+            border-top: 1px solid #e0e0e0;
+            padding: 64px 0 32px;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 48px;
+        }
+        
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: #666;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: #1a73e8;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .main-nav {
+                gap: 20px;
+            }
+            
+            .hero-title {
+                font-size: 36px;
+            }
+            
+            .hero-subtitle {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+            }
+            
+            .features-grid,
+            .events-grid,
+            .users-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .events-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .main-nav {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            
+            .hero {
+                padding: 60px 0;
+            }
+            
+            .hero-title {
+                font-size: 28px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .features,
+            .events,
+            .announcements,
+            .users {
+                padding: 60px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <h1>Цифровое общежитие</h1>
+            </div>
+            
+            <nav class="main-nav">
+                <a href="#features" class="nav-link">Возможности</a>
+                <a href="#events" class="nav-link">Мероприятия</a>
+                <a href="#announcements" class="nav-link">Объявления</a>
+                <a href="#contacts" class="nav-link">Контакты</a>
+            </nav>
+            
+            <div class="auth-buttons">
+                <button class="btn btn-login" id="loginBtn">Войти</button>
+                <button class="btn btn-primary" id="registerBtn">Регистрация</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <!-- Герой-секция -->
+        <section class="hero">
+            <div class="hero-container">
+                <h1 class="hero-title">Система управления студенческим общежитием</h1>
+                <p class="hero-subtitle">Единая платформа для организации жизни в общежитии: расписание дежурств, мероприятия, начисление баллов и многое другое</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" id="viewEventsBtn">Посмотреть мероприятия</button>
+                    <button class="btn btn-login" id="learnMoreBtn">Узнать больше</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Преимущества -->
+        <section class="features" id="features">
+            <h2 class="section-title">Возможности системы</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3 class="feature-title">Расписание дежурств</h3>
+                    <p class="feature-desc">Автоматическое распределение дежурств и уведомления о сменах</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">Система баллов</h3>
+                    <p class="feature-desc">Начисление баллов за активность и участие в мероприятиях</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">Объявления</h3>
+                    <p class="feature-desc">Оперативное информирование о важных событиях и изменениях</p>
+                </div>
+                
+                <div class="feature-card">
+                    <h3 class="feature-title">Управление</h3>
+                    <p class="feature-desc">Контроль и администрирование для комендантов и студсовета</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ближайшие мероприятия -->
+        <section class="events" id="events">
+            <div class="events-container">
+                <div class="events-header">
+                    <h2 class="section-title">Ближайшие мероприятия</h2>
+                    <a href="#" class="view-all">Все мероприятия →</a>
+                </div>
+                
+                <div class="events-grid">
+                    <div class="event-card">
+                        <div class="event-date">25 декабря 2024</div>
+                        <h3 class="event-title">Новогодний вечер</h3>
+                        <div class="event-details">
+                            <span class="event-detail">19:00</span>
+                            <span class="event-detail">Актовый зал</span>
+                        </div>
+                        <span class="event-points">+20 баллов</span>
+                    </div>
+                    
+                    <div class="event-card">
+                        <div class="event-date">15 ноября 2024</div>
+                        <h3 class="event-title">Субботник на территории</h3>
+                        <div class="event-details">
+                            <span class="event-detail">10:00</span>
+                            <span class="event-detail">Территория общежития</span>
+                        </div>
+                        <span class="event-points">+15 баллов</span>
+                    </div>
+                    
+                    <div class="event-card">
+                        <div class="event-date">25 января 2025</div>
+                        <h3 class="event-title">День студента</h3>
+                        <div class="event-details">
+                            <span class="event-detail">18:00</span>
+                            <span class="event-detail">Спортивный зал</span>
+                        </div>
+                        <span class="event-points">+10 баллов</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Объявления -->
+        <section class="announcements" id="announcements">
+            <div class="announcements-container">
+                <h2 class="section-title">Важные объявления</h2>
+                <div class="announcements-list">
+                    <div class="announcement-card">
+                        <div class="announcement-header">
+                            <h3 class="announcement-title">Отключение горячей воды</h3>
+                            <div class="announcement-date">20 октября 2024</div>
+                        </div>
+                        <p class="announcement-text">25 октября с 9:00 до 17:00 будет отключена горячая вода в блоке Б для проведения плановых работ. Приносим извинения за временные неудобства.</p>
+                    </div>
+                    
+                    <div class="announcement-card">
+                        <div class="announcement-header">
+                            <h3 class="announcement-title">Общее собрание жителей</h3>
+                            <div class="announcement-date">15 октября 2024</div>
+                        </div>
+                        <p class="announcement-text">Уважаемые жители общежития! Приглашаем всех на общее собрание, которое состоится 28 октября в 19:00 в актовом зале.</p>
+                    </div>
+                    
+                    <div class="announcement-card">
+                        <div class="announcement-header">
+                            <h3 class="announcement-title">Проверка противопожарной системы</h3>
+                            <div class="announcement-date">10 октября 2024</div>
+                        </div>
+                        <p class="announcement-text">18 октября с 10:00 до 14:00 будет проводиться проверка противопожарной системы во всех корпусах. Просим обеспечить доступ в комнаты.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Кто пользуется -->
+        <section class="users">
+            <div class="users-container">
+                <h2 class="section-title">Для кого эта система</h2>
+                <div class="users-grid">
+                    <div class="user-card">
+                        <h3 class="user-title">Студенты</h3>
+                        <p class="user-desc">Просмотр расписания дежурств, участие в мероприятиях, контроль баллов</p>
+                    </div>
+                    
+                    <div class="user-card">
+                        <h3 class="user-title">Коменданты</h3>
+                        <p class="user-desc">Управление студентами, создание мероприятий, начисление баллов</p>
+                    </div>
+                    
+                    <div class="user-card">
+                        <h3 class="user-title">Студсовет</h3>
+                        <p class="user-desc">Организация мероприятий, работа с обращениями, администрирование</p>
+                    </div>
+                    
+                    <div class="user-card">
+                        <h3 class="user-title">Администрация</h3>
+                        <p class="user-desc">Контроль и мониторинг, аналитика, генерация отчетов</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Подвал -->
+        <footer class="footer" id="contacts">
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <div class="footer-section">
+                        <h3>Общежитие</h3>
+                        <p style="color: #666; font-size: 14px; margin-top: 8px;">Система управления студенческим общежитием. Все права защищены.</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Навигация</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">Главная</a></li>
+                            <li><a href="#">Мероприятия</a></li>
+                            <li><a href="#">Дежурства</a></li>
+                            <li><a href="#">Баллы</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Контакты</h3>
+                        <ul class="footer-links">
+                            <li>Комендатура: +7 (XXX) XXX-XX-XX</li>
+                            <li>Студсовет: студсовет@dorm.ru</li>
+                            <li>Техподдержка: support@dorm.ru</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Социальные сети</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">ВКонтакте</a></li>
+                            <li><a href="#">Telegram</a></li>
+                            <li><a href="#">Instagram</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    © 2025 Система управления общежитием. Сделано для студентов.
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        // Навигация по странице
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Кнопки авторизации
+        document.getElementById('loginBtn').addEventListener('click', function() {
+        window.location.href = 'avtorizatia.html';
+        });
+        /*document.getElementById('loginBtn').addEventListener('click', function() {
+            alert('Переход на страницу входа. В реальном приложении здесь будет: window.location.href = "login.html"');
+        });
+        
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            alert('Переход на страницу регистрации. Обратитесь к коменданту для получения доступа.');
+        });*/
+        
+        // Кнопки в герой-секции
+        document.getElementById('viewEventsBtn').addEventListener('click', function() {
+            const eventsSection = document.getElementById('events');
+            window.scrollTo({
+                top: eventsSection.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+        
+        document.getElementById('learnMoreBtn').addEventListener('click', function() {
+            const featuresSection = document.getElementById('features');
+            window.scrollTo({
+                top: featuresSection.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Фиксированная шапка
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+        
+        // Анимация появления элементов при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Анимируем карточки
+        const cards = document.querySelectorAll('.feature-card, .event-card, .announcement-card, .user-card');
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
+        
+        // Задержка для анимации
+        setTimeout(() => {
+            cards.forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+            });
+        }, 100);
+    </script>
+</body>
+</html>

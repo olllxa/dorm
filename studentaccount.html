@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Общежитие</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 24px 24px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 24px;
+        }
+        
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 16px;
+            margin-bottom: 24px;
+        }
+        
+        .nav-item {
+            margin-bottom: 4px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #4a4a4a;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #1a1a1a;
+        }
+        
+        .nav-link.active {
+            background-color: #8f0d0d;
+            color: white;
+        }
+        
+        .user-info {
+            padding: 24px 24px 0 24px;
+            margin-top: auto;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background-color: #8f0d0d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .user-details {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+        
+        .logout-btn {
+            width: 100%;
+            padding: 8px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .main-content {
+            flex: 1;
+            margin-left: 240px;
+            padding: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .card-link {
+            font-size: 14px;
+            color: #8f0d0d;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .card-link:hover {
+            text-decoration: underline;
+        }
+        
+        .points-value {
+            font-size: 48px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+        
+        .points-label {
+            color: #666;
+            margin-bottom: 16px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: #8f0d0d;
+            width: 75%;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+        }
+        
+        .info-value {
+            font-weight: 500;
+        }
+        
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #8f0d0d;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 16px;
+        }
+        
+        .action-btn:hover {
+            background-color: #8f0d0d;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-planned {
+            background-color: #a49ea1;
+            color: #ffffff;
+        }
+        
+        .status-active {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .table-btn {
+            padding: 6px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .table-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .announcement-item {
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .announcement-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .announcement-date {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .announcement-text {
+            color: #4a4a4a;
+            line-height: 1.5;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Цифровое</h1>
+            <h1>общежитие</h1>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#cleaning" class="nav-link">Расписание дежурств</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#party" class="nav-link">Мероприятия</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#cleaning" class="nav-link">Баллы</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#loud" class="nav-link">Объявления</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="user-avatar">ОК</div>
+            <div class="user-name">Ольга Кляшторная</div>
+            <div class="user-details">0907-31, Блок 3, Комната 2</div>
+            <button class="logout-btn" id="logoutBtn">Выйти</button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <h1 class="page-title" id="cleaning">Личный кабинет</h1>
+        <p class="page-subtitle">Ваша информация и активность в общежитии</p>
+        
+        <div class="dashboard-cards">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Ваши баллы</h2>
+                    <a href="#" class="card-link">Подробнее</a>
+                </div>
+                <div class="points-value">127</div>
+                <div class="points-label">из 150 необходимых</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Ближайшее дежурство</h2>
+                    <a href="#" class="card-link">Расписание</a>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Дата</span>
+                    <span class="info-value">11 декабря 2025</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Время</span>
+                    <span class="info-value">21:00 - 22:00</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Место</span>
+                    <span class="info-value">Корпус ДАС-8, 2 этаж</span>
+                </div>
+                <button class="action-btn">Подтвердить участие</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Активность</h2>
+                    <a href="#" class="card-link">Статистика</a>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Участие в мероприятиях</span>
+                    <span class="info-value">3</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Выполнено дежурств</span>
+                    <span class="info-value">2</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Получено баллов</span>
+                    <span class="info-value" style="color: #28a745;">+45</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Место в рейтинге</span>
+                    <span class="info-value" style="color: #8f0d0d;">12 из 150</span>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" id="party">Мероприятия</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>Баллы</th>
+                        <th>Статус</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Новогодний вечер</td>
+                        <td>25.12.2025</td>
+                        <td>19:00</td>
+                        <td>+20</td>
+                        <td><span class="status-badge status-planned">Планируется</span></td>
+                        <td><button class="table-btn">Записаться</button></td>
+                    </tr>
+                    <tr>
+                        <td>Субботник</td>
+                        <td>13.12.2025</td>
+                        <td>10:00</td>
+                        <td>+15</td>
+                        <td><span class="status-badge status-active">Идёт запись</span></td>
+                        <td><button class="table-btn">Записаться</button></td>
+                    </tr>
+                    <tr>
+                        <td>Лекция</td>
+                        <td>12.12.2025</td>
+                        <td>18:00</td>
+                        <td>+10</td>
+                        <td><span class="status-badge status-active">Идёт запись</span></td>
+                        <td><button class="table-btn">Записаться</button></td>
+                    </tr>
+                    <tr>
+                        <td>Конкурс талантов</td>
+                        <td>25.01.2026</td>
+                        <td>17:00</td>
+                        <td>+25</td>
+                        <td><span class="status-badge status-planned">Планируется</span></td>
+                        <td><button class="table-btn">Записаться</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2 class="section-title" id="loud">Объявления</h2>
+        <div class="announcement-item">
+            <div class="announcement-title">Отключение горячей воды</div>
+            <div class="announcement-date">10 декабря 2025, комендантура</div>
+            <div class="announcement-text">
+                10 декабря с 10:00 до 15:00 будет отключена горячая вода в общежитие для проведения плановых работ.
+            </div>
+        </div>
+        
+        <div class="announcement-item">
+            <div class="announcement-title">Общее собрание жителей</div>
+            <div class="announcement-date">13 декабря 2025, студсовет</div>
+            <div class="announcement-text">
+                Уважаемые жители общежития! Приглашаем всех на общее собрание, которое состоится 13 декабря в 19:00 в актовом зале.
+            </div>
+        </div>
+        
+        <div class="announcement-item">
+            <div class="announcement-title">Проверка противопожарной системы</div>
+            <div class="announcement-date">13 декабря 2025, комендатура</div>
+            <div class="announcement-text">
+                13 декабря 2025 с 10:00 до 11:00 будет проводиться проверка противопожарной системы во всех корпусах(ДАС-8, ДАС-9).
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Выход из системы
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите выйти из системы?')) {
+                alert('Вы успешно вышли из системы.');
+                // window.location.href = 'login.html';
+            }
+        });
+        
+        // Запись на мероприятия
+        const tableBtns = document.querySelectorAll('.table-btn');
+        tableBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const eventName = this.closest('tr').querySelector('td').textContent;
+                
+                if (confirm(`Вы хотите записаться на мероприятие "${eventName}"?`)) {
+                    this.textContent = 'Записан';
+                    this.style.backgroundColor = '#28a745';
+                    this.style.color = 'white';
+                    this.disabled = true;
+                }
+            });
+        });
+        
+        // Подтверждение участия в дежурстве
+        const actionBtn = document.querySelector('.action-btn');
+        actionBtn.addEventListener('click', function() {
+            if (confirm('Подтвердить участие в дежурстве?')) {
+                this.textContent = 'Участие подтверждено';
+                this.style.backgroundColor = '#28a745';
+                this.disabled = true;
+            }
+        });
+        // Навигация по странице
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+        window.location.href = 'avtorizatia.html';
+        });
+    </script>
+</body>
+</html>

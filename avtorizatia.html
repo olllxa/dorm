@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в систему общежития</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        
+        .header h1 {
+            color: #000000;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            min-height: 500px;
+        }
+        
+        .login-info {
+            flex: 1;
+            background-color: #8f0d0d;
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .login-info ul {
+            list-style-type: none;
+            margin-top: 30px;
+        }
+        
+        .login-info li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .login-info li:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        
+        .login-form {
+            flex: 1;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-form h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .role-selector {
+            margin-bottom: 25px;
+        }
+        
+        .role-selector label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .role-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .role-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .role-option input {
+            display: none;
+        }
+        
+        .role-option label {
+            display: block;
+            padding: 12px 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: normal;
+        }
+        
+        .role-option input:checked + label {
+            background-color: #8f0d0d;
+            color: white;
+            border-color: #8f0d0d;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remember input {
+            margin-right: 8px;
+        }
+        
+        .forgot-password {
+            color: #3498db;
+            text-decoration: none;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-button {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .login-button:hover {
+            background-color: #292828;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            position: relative;
+            color: #95a5a6;
+        }
+        
+        .divider:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #eee;
+            z-index: 1;
+        }
+        
+        .divider span {
+            background-color: white;
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .gosuslugi-btn {
+            background-color: #309fa9;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .gosuslugi-btn:hover {
+            background-color: #2d862d;
+        }
+        
+        .gosuslugi-icon {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .register-link {
+            text-align: center;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        
+        .register-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 0.9rem;
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+            
+            .login-info, .login-form {
+                padding: 30px 25px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Цифровое общежитие</h1>
+            <p>Система управления студенческим общежитием. Войдите в систему для доступа к расписанию дежурств, мероприятиям и баллам.</p>
+        </div>
+        
+        <div class="login-container">
+            <div class="login-info">
+                <h2>Возможности системы</h2>
+                <p>После авторизации вы получите доступ к персонализированным функциям в зависимости от вашей роли:</p>
+                <ul>
+                    <li>Просмотр графика дежурств</li>
+                    <li>Информация о мероприятиях и участие в них</li>
+                    <li>Контроль набранных баллов</li>
+                    <li>Персональные объявления</li>
+                    <li>Доступ к контактной информации</li>
+                </ul>
+                <p style="margin-top: 30px; font-style: italic;">Выберите роль для входа в систему</p>
+            </div>
+            
+            <div class="login-form">
+                <h2>Вход в систему</h2>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Логин (номер студенческого или email)</label>
+                        <input type="text" id="username" name="username" placeholder="Введите ваш логин" required>
+                        <div class="error-message" id="username-error">Пожалуйста, введите корректный логин</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" name="password" placeholder="Введите ваш пароль" required>
+                        <div class="error-message" id="password-error">Пароль должен содержать не менее 6 символов</div>
+                    </div>
+                    
+                    <div class="role-selector">
+                        <label>Выберите роль:</label>
+                        <div class="role-options">
+                            <div class="role-option">
+                                <input type="radio" id="role-student" name="role" value="student" checked>
+                                <label for="role-student">Студент</label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" id="role-admin" name="role" value="admin">
+                                <label for="role-admin">Комендант</label>
+                            </div>
+                            <div class="role-option">
+                                <input type="radio" id="role-council" name="role" value="council">
+                                <label for="role-council">Студсовет</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="remember-forgot">
+                        <div class="remember">
+                            <input type="checkbox" id="remember" name="remember">
+                            <label for="remember">Запомнить меня</label>
+                        </div>
+                        <a href="#" class="forgot-password">Забыли пароль?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-button">Войти в систему</button>
+                </form>
+                
+                <div class="divider">
+                    <span>Или войдите через</span>
+                </div>
+                
+                <button class="gosuslugi-btn" id="gosuslugiBtn">
+                    <span class="gosuslugi-icon">Г</span>
+                    Госуслуги
+                </button>
+                
+                <div class="register-link">
+                    Нет аккаунта? <a href="#">Обратитесь к коменданту общежития</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Система управления общежитием. Все права защищены.</p>
+            <p>Контактная информация: комендатура корпуса №3, тел: +7 (XXX) XXX-XX-XX</p>
+        </div>
+    </div>
+
+    <script>
+        // Валидация формы входа (оригинальный код)
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+            
+            let isValid = true;
+            
+            // Сброс ошибок
+            document.getElementById('username-error').style.display = 'none';
+            document.getElementById('password-error').style.display = 'none';
+            
+            // Проверка логина
+            if (username.length < 3) {
+                document.getElementById('username-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            // Проверка пароля
+            if (password.length < 6) {
+                document.getElementById('password-error').style.display = 'block';
+                isValid = false;
+            }
+            
+            if (isValid) {
+            // Здесь обычно отправка данных на сервер
+            console.log('Попытка входа:', { username, password, role });
+            
+            // Перенаправление в зависимости от роли
+            if (role === 'student') {
+                window.location.href = 'studentaccount.html';
+            } else if (role === 'admin') {
+                window.location.href = 'komenda.html';
+            } else if (role === 'council') {
+                window.location.href = 'council.html'; // или другая страница
+            }
+            }
+        });
+        
+        // Обработчик для кнопки Госуслуг
+        document.getElementById('gosuslugiBtn').addEventListener('click', function() {
+            alert('Перенаправление на страницу авторизации через Госуслуги. В реальной системе здесь будет OAuth-интеграция.');
+            // window.location.href = 'https://esia.gosuslugi.ru/';
+        });
+        
+        // Вспомогательная функция для получения названия роли
+        function getRoleName(roleValue) {
+            switch(roleValue) {
+                case 'student': return 'Студент';
+                case 'admin': return 'Комендант';
+                case 'council': return 'Студенческий совет';
+                default: return 'Пользователь';
+            }
+        }
+        
+        // Обработчик для ссылки "Забыли пароль?"
+        document.querySelector('.forgot-password').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Для восстановления пароля обратитесь к коменданту вашего общежития или в IT-отдел учебного заведения.');
+        });
+        
+        // Обработчик для ссылки регистрации
+        document.querySelector('.register-link a').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Для регистрации в системе обратитесь непосредственно к коменданту вашего общежития.');
+        });
+    </script>
+</body>
+</html>

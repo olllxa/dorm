@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления - Общежитие</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 24px 24px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 24px;
+        }
+        
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #8f0d0d;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 16px;
+            margin-bottom: 24px;
+        }
+        
+        
+        .nav-item {
+            margin-bottom: 4px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #4a4a4a;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #1a1a1a;
+        }
+        
+        .nav-link.active {
+            background-color: #8f0d0d;
+            color: white;
+        }
+        
+        .user-info {
+            padding: 24px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: auto;
+        }
+        
+        .user-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #8f0d0d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .user-role {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .logout-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+        
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Быстрые действия */
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title-text {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Кнопки-кружочки для мероприятий и баллов */
+        .circle-add-btn {
+            width: 36px;
+            height: 36px;
+            background-color: #8f0d0d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            margin-left: 10px;
+            box-shadow: 0 2px 8px rgba(143, 13, 13, 0.3);
+        }
+        
+        .circle-add-btn:hover {
+            background-color: #a00f0f;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(143, 13, 13, 0.4);
+        }
+        
+        .points-circle-btn {
+            background-color: #28a745;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+        }
+        
+        .points-circle-btn:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+        }
+        
+        .announcement-circle-btn {
+            background-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .announcement-circle-btn:hover {
+            background-color: #2980b9;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .section-actions-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .action-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-card:hover {
+            border-color: #8f0d0d;
+            background-color: #f8f9fa;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .action-desc {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Управление */
+        .management-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+            color: #333;
+        }
+        
+        .btn-primary {
+            background-color: #8f0d0d;
+            color: white;
+            border-color: #8f0d0d;
+        }
+        
+        .btn-primary:hover {
+            background-color: #8f0d0d;
+            border-color: #8f0d0d;
+        }
+        
+        .btn-secondary {
+            background-color: #f8f9fa;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Фильтры */
+        .filters {
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .filter-input, .filter-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+        
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: #8f0d0d;
+        }
+        
+        /* Таблицы */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .table-btn {
+            padding: 6px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background-color: white;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .table-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .table-btn.edit {
+            color: #f57c00;
+            border-color: #f57c00;
+        }
+        
+        .table-btn.delete {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+        
+        .table-btn.points {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-planned {
+            background-color: #a49ea1;
+            color: #ffffff;
+        }
+        
+        .status-active {
+            background-color: #fff3e0;
+            color: #f57c00;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #8f0d0d;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* Стили для чекбоксов выбора аудитории */
+        .audience-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .audience-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .audience-checkbox input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Стили для важности объявления */
+        .priority-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .priority-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .priority-btn:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .priority-btn.selected {
+            border-color: #3498db;
+            background-color: #ebf5fb;
+            font-weight: 500;
+        }
+        
+        .priority-low {
+            border-color: #2ecc71 !important;
+            background-color: #eafaf1 !important;
+        }
+        
+        .priority-medium {
+            border-color: #f39c12 !important;
+            background-color: #fef5e7 !important;
+        }
+        
+        .priority-high {
+            border-color: #e74c3c !important;
+            background-color: #fdedec !important;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .section-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn {
+                flex: 1;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .audience-checkboxes {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .circle-add-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+            }
+            
+            .audience-checkboxes {
+                grid-template-columns: 1fr;
+            }
+            
+            .priority-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Панель управления</h1>
+            <div class="role-badge">Комендант</div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#party" class="nav-link">Мероприятия</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#students" class="nav-link">Студенты</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#loud" class="nav-link">Объявления</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="user-header">
+                <div class="user-avatar">АН</div>
+                <div class="user-details">
+                    <div class="user-name">Алия Наиловна</div>
+                    <div class="user-role">Комендант общежития ДАС-8 и ДАС-9</div>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Выйти</button>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <h1 class="page-title">Панель управления</h1>
+        <p class="page-subtitle" id="work">Управление студенческим общежитием №3</p>
+        
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">148</div>
+                <div class="stat-label">Всего студентов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Активных мероприятий</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">42</div>
+                <div class="stat-label">Заявок на рассмотрении</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1,842</div>
+                <div class="stat-label">Всего начислено баллов</div>
+            </div>
+        </div>
+
+
+        <div class="actions-grid">
+            <div class="action-card" id="addEventBtn">
+                <div class="action-title">Добавить мероприятие</div>
+                <div class="action-desc">Создать новое мероприятие</div>
+            </div>
+            
+            <div class="action-card" id="managePointsBtn">
+                <div class="action-title">Управление баллами</div>
+                <div class="action-desc">Начислить или списать баллы</div>
+            </div>
+            
+            <div class="action-card" id="addAnnouncementBtn">
+                <div class="action-title">Создать объявление</div>
+                <div class="action-desc">Опубликовать новое объявление</div>
+            </div>
+            
+            <!--<div class="action-card" id="viewReportsBtn">
+                <div class="action-title">Посмотреть отчеты</div>
+                <div class="action-desc">Статистика и аналитика</div>
+            </div> -->
+        </div>
+
+        <!-- Управление студентами -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title" id="students">Управление студентами</h2>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" id="importBtn">Импорт</button>
+                    <button class="btn btn-primary" id="addStudentBtn">Добавить студента</button>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">Блок</label>
+                        <select class="filter-select">
+                            <option>Все блоки</option>
+                            <option>Блок 3</option>
+                            <option>Блок 4</option>
+                            <option>Блок 5</option>
+                            <option>Блок 6</option>
+                            <option>Блок 7</option>
+                            <option>Блок 8</option>
+                            <option>Блок 9</option>
+                            <option>Блок 10</option>
+                            <option>Блок 11</option>
+                            <option>Блок 12</option>
+                            <option>Блок 13</option>
+                            <option>Блок 14</option>
+                            <option>Блок 15</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Группа</label>
+                        <select class="filter-select">
+                            <option>Все группы</option>
+                            <option>0907-21</option>
+                            <option>0907-22</option>
+                            <option>0907-31</option>
+                            <option>0907-32</option>
+                            <option>1812-32</option>
+                            <option>1815-21</option>
+                            <option>1815-31</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Поиск</label>
+                        <input type="text" class="filter-input" placeholder="ФИО, комната, группа...">
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">&nbsp;</label>
+                        <button class="btn btn-primary" style="width: 100%; height: 40px;">Применить</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ФИО студента</th>
+                            <th>Общежитие</th>
+                            <th>Группа</th>
+                            <th>Блок/Комната</th>
+                            <th>Телефон</th>
+                            <th>Баллы</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Кляшторная Ольга Антоновна</td>
+                            <td>ДАС-8</td>
+                            <td>0907-31</td>
+                            <td>3/2</td>
+                            <td>+7 (900) 123-45-67</td>
+                            <td><strong>127</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn points">Баллы</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Титова Яна Андреевна</td>
+                            <td>ДАС-8</td>
+                            <td>1812-32</td>
+                            <td>4/1</td>
+                            <td>+7 (900) 234-56-78</td>
+                            <td><strong>85</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn points">Баллы</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Зайцев Данил Александрович</td>
+                            <td>ДАС-9</td>
+                            <td>1815-21</td>
+                            <td>9/4</td>
+                            <td>+7 (900) 345-67-89</td>
+                            <td><strong>110</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn points">Баллы</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Кузнецов Дмитрий Алексеевич</td>
+                            <td>ДАС-9</td>
+                            <td>0907-22</td>
+                            <td>7/2</td>
+                            <td>+7 (900) 456-78-90</td>
+                            <td><strong>92</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn points">Баллы</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Управление мероприятиями -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title" id="party">
+                    <div class="section-title-text">Управление мероприятиями</div>
+                </h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" id="addEventBtn2">Добавить мероприятие</button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Дата</th>
+                            <th>Баллы</th>
+                            <th>Статус</th>
+                            <th>Участников</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Новогодний вечер</td>
+                            <td>25.12.2024 19:00</td>
+                            <td>+20</td>
+                            <td><span class="status-badge status-planned">Планируется</span></td>
+                            <td>42</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Субботник на территории</td>
+                            <td>15.11.2024 10:00</td>
+                            <td>+15</td>
+                            <td><span class="status-badge status-active">Идёт запись</span></td>
+                            <td>28</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Конкурс талантов</td>
+                            <td>15.02.2025 17:00</td>
+                            <td>+25</td>
+                            <td><span class="status-badge status-planned">Планируется</span></td>
+                            <td>15</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>День студента</td>
+                            <td>25.01.2025 18:00</td>
+                            <td>+10</td>
+                            <td><span class="status-badge status-planned">Планируется</span></td>
+                            <td>0</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn edit">Ред.</button>
+                                    <button class="table-btn delete">Уд.</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно добавления мероприятия -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Добавление нового мероприятия</div>
+                <button class="modal-close" id="closeEventModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    <div class="form-group">
+                        <label class="form-label">Название мероприятия *</label>
+                        <input type="text" class="form-input" id="eventName" placeholder="Введите название" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Дата проведения *</label>
+                            <input type="date" class="form-input" id="eventDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Время проведения *</label>
+                            <input type="time" class="form-input" id="eventTime" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Место проведения</label>
+                        <input type="text" class="form-input" id="eventLocation" placeholder="Актовый зал, спортзал и т.д.">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Баллы за участие *</label>
+                        <input type="number" class="form-input" id="eventPoints" min="1" max="100" value="10" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Описание мероприятия</label>
+                        <textarea class="form-input" id="eventDescription" rows="4" placeholder="Подробное описание мероприятия..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Статус мероприятия</label>
+                        <select class="form-input" id="eventStatus">
+                            <option value="planned">Планируется</option>
+                            <option value="active">Идёт запись</option>
+                        </select>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Создать мероприятие</button>
+                        <button type="button" class="btn" id="cancelEventModal" style="flex: 1;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно управления баллами -->
+    <div class="modal" id="pointsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Управление баллами студентов</div>
+                <button class="modal-close" id="closePointsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="pointsForm">
+                    <div class="form-group">
+                        <label class="form-label">Выберите студента *</label>
+                        <select class="form-input" id="studentSelect" required>
+                            <option value="">-- Выберите студента --</option>
+                            <option value="1">Кляшторная Ольга Антоновна (127 баллов)</option>
+                            <option value="2">Титова Яна Андреевна (85 баллов)</option>
+                            <option value="3">Зайцев Данил Александрович (110 баллов)</option>
+                            <option value="4">Кузнецов Дмитрий Алексеевич (92 балла)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Тип операции *</label>
+                            <select class="form-input" id="operationType" required>
+                                <option value="add">Начислить баллы</option>
+                                <option value="subtract">Списать баллы</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Количество баллов *</label>
+                            <input type="number" class="form-input" id="pointsAmount" min="1" max="1000" value="10" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Причина операции *</label>
+                        <select class="form-input" id="pointsReason" required>
+                            <option value="">-- Выберите причину --</option>
+                            <option value="event">Участие в мероприятии</option>
+                            <option value="duty">Выполнение дежурства</option>
+                            <option value="violation">Нарушение правил</option>
+                            <option value="achievement">Достижение в учебе/спорте</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Описание</label>
+                        <textarea class="form-input" id="pointsDescription" rows="3" placeholder="Подробное описание причины начисления/списания баллов..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата операции</label>
+                        <input type="date" class="form-input" id="pointsDate" value="<?php echo date('Y-m-d'); ?>">
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; background-color: #8f0d0d;">Выполнить операцию</button>
+                        <button type="button" class="btn" id="cancelPointsModal" style="flex: 1;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- НОВОЕ: Модальное окно создания объявления -->
+    <div class="modal" id="announcementModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Создание нового объявления</div>
+                <button class="modal-close" id="closeAnnouncementModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="announcementForm">
+                    <div class="form-group">
+                        <label class="form-label">Заголовок объявления *</label>
+                        <input type="text" class="form-input" id="announcementTitle" placeholder="Введите заголовок объявления" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Текст объявления *</label>
+                        <textarea class="form-input" id="announcementText" rows="6" placeholder="Введите текст объявления..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Категория объявления *</label>
+                        <select class="form-input" id="announcementCategory" required>
+                            <option value="">-- Выберите категорию --</option>
+                            <option value="general">Общая информация</option>
+                            <option value="events">Мероприятия</option>
+                            <option value="rules">Правила проживания</option>
+                            <option value="repair">Ремонтные работы</option>
+                            <option value="schedule">Изменения в расписании</option>
+                            <option value="important">Важная информация</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Аудитория (для кого предназначено)</label>
+                        <div class="audience-checkboxes">
+                            <div class="audience-checkbox">
+                                <input type="checkbox" id="audienceAll" name="audience" value="all" checked>
+                                <label for="audienceAll">Все студенты</label>
+                            </div>
+                            <div class="audience-checkbox">
+                                <input type="checkbox" id="audienceDas8" name="audience" value="das8">
+                                <label for="audienceDas8">ДАС-8</label>
+                            </div>
+                            <div class="audience-checkbox">
+                                <input type="checkbox" id="audienceDas9" name="audience" value="das9">
+                                <label for="audienceDas9">ДАС-9</label>
+                            </div>
+                            <div class="audience-checkbox">
+                                <input type="checkbox" id="audienceFloor3" name="audience" value="floor3">
+                                <label for="audienceFloor3">3 этаж</label>
+                            </div>
+                            <div class="audience-checkbox">
+                                <input type="checkbox" id="audienceFloor4" name="audience" value="floor4">
+                                <label for="audienceFloor4">4 этаж</label>
+                            </div>
+                            <div class="audience-checkbox">
+                                <input type="checkbox" id="audienceGroups" name="audience" value="groups">
+                                <label for="audienceGroups">Конкретные группы</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Дата публикации</label>
+                            <input type="date" class="form-input" id="announcementDate">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Срок актуальности (дней)</label>
+                            <input type="number" class="form-input" id="announcementExpiry" min="1" max="365" value="7">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Важность объявления *</label>
+                        <div class="priority-buttons" id="priorityButtons">
+                            <div class="priority-btn priority-low" data-priority="low">
+                                Низкая
+                            </div>
+                            <div class="priority-btn priority-medium selected" data-priority="medium">
+                                Средняя
+                            </div>
+                            <div class="priority-btn priority-high" data-priority="high">
+                                Высокая
+                            </div>
+                        </div>
+                        <input type="hidden" id="announcementPriority" value="medium" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Прикрепить файл (необязательно)</label>
+                        <input type="file" class="form-input" id="announcementFile">
+                        <small style="color: #666; display: block; margin-top: 5px;">Максимальный размер файла: 5MB. Разрешены: PDF, JPG, PNG, DOC</small>
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; background-color: #8f0d0d;">Опубликовать объявление</button>
+                        <button type="button" class="btn" id="cancelAnnouncementModal" style="flex: 1;">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Выход из системы
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите выйти из панели управления?')) {
+                alert('Вы успешно вышли из системы.');
+                // window.location.href = 'login.html';
+            }
+        });
+        
+        // Управление модальным окном мероприятия
+        const eventModal = document.getElementById('eventModal');
+        const addEventBtns = document.querySelectorAll('#addEventBtn, #addEventBtn2');
+        const closeEventModal = document.getElementById('closeEventModal');
+        const cancelEventModal = document.getElementById('cancelEventModal');
+        
+        addEventBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                eventModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        closeEventModal.addEventListener('click', function() {
+            eventModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        cancelEventModal.addEventListener('click', function() {
+            eventModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Управление модальным окном баллов
+        const pointsModal = document.getElementById('pointsModal');
+        const managePointsBtn = document.getElementById('managePointsBtn');
+        const closePointsModal = document.getElementById('closePointsModal');
+        const cancelPointsModal = document.getElementById('cancelPointsModal');
+        
+        // Открытие модального окна баллов
+        managePointsBtn.addEventListener('click', function() {
+            pointsModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Закрытие модального окна баллов
+        closePointsModal.addEventListener('click', function() {
+            pointsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        cancelPointsModal.addEventListener('click', function() {
+            pointsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Управление модальным окном объявлений
+        const announcementModal = document.getElementById('announcementModal');
+        const addAnnouncementBtn = document.getElementById('addAnnouncementBtn');
+        const closeAnnouncementModal = document.getElementById('closeAnnouncementModal');
+        const cancelAnnouncementModal = document.getElementById('cancelAnnouncementModal');
+        
+        // Открытие модального окна объявлений
+        addAnnouncementBtn.addEventListener('click', function() {
+            announcementModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // Закрытие модального окна объявлений
+        closeAnnouncementModal.addEventListener('click', function() {
+            announcementModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        cancelAnnouncementModal.addEventListener('click', function() {
+            announcementModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Закрытие модальных окон при клике вне их
+        window.addEventListener('click', function(event) {
+            if (event.target === eventModal) {
+                eventModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (event.target === pointsModal) {
+                pointsModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+            if (event.target === announcementModal) {
+                announcementModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Обработка формы мероприятия
+        document.getElementById('eventForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const eventName = document.getElementById('eventName').value;
+            
+            alert(`Мероприятие "${eventName}" успешно создано!`);
+            eventModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            this.reset();
+        });
+        
+        // Обработка формы баллов
+        document.getElementById('pointsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const studentSelect = document.getElementById('studentSelect');
+            const studentName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
+            const operationType = document.getElementById('operationType').value;
+            const pointsAmount = document.getElementById('pointsAmount').value;
+            
+            alert(`Успешно ${operationType === 'add' ? 'начислено' : 'списано'} ${pointsAmount} баллов студенту ${studentName}`);
+            pointsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            this.reset();
+            // Сбросить дату на сегодняшнюю
+            document.getElementById('pointsDate').value = new Date().toISOString().split('T')[0];
+        });
+        
+        // Обработка формы объявлений
+        document.getElementById('announcementForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const announcementTitle = document.getElementById('announcementTitle').value;
+            const announcementCategory = document.getElementById('announcementCategory').value;
+            const announcementPriority = document.getElementById('announcementPriority').value;
+            
+            // Получаем выбранные аудитории
+            const selectedAudiences = [];
+            const audienceCheckboxes = document.querySelectorAll('input[name="audience"]:checked');
+            audienceCheckboxes.forEach(checkbox => {
+                selectedAudiences.push(checkbox.value);
+            });
+            
+            const audienceText = selectedAudiences.includes('all') ? 'Все студенты' : `Выбранные аудитории: ${selectedAudiences.length}`;
+            
+            alert(`Объявление "${announcementTitle}" успешно создано!\nКатегория: ${announcementCategory}\nВажность: ${announcementPriority}\nАудитория: ${audienceText}`);
+            announcementModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            this.reset();
+            // Сбросить кнопки важности
+            document.querySelectorAll('.priority-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            document.querySelector('.priority-btn[data-priority="medium"]').classList.add('selected');
+            document.getElementById('announcementPriority').value = 'medium';
+            
+            // Установить сегодняшнюю дату
+            document.getElementById('announcementDate').value = new Date().toISOString().split('T')[0];
+        });
+        
+        // Логика для кнопок важности объявления
+        const priorityButtons = document.querySelectorAll('.priority-btn');
+        priorityButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Убираем выделение со всех кнопок
+                priorityButtons.forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                // Добавляем выделение текущей кнопке
+                this.classList.add('selected');
+                
+                // Устанавливаем значение в скрытое поле
+                const priority = this.getAttribute('data-priority');
+                document.getElementById('announcementPriority').value = priority;
+            });
+        });
+        
+        // Логика для чекбокса "Все студенты"
+        document.getElementById('audienceAll').addEventListener('change', function() {
+            if (this.checked) {
+                // Если выбрано "Все студенты", отключаем другие чекбоксы
+                document.querySelectorAll('input[name="audience"]:not(#audienceAll)').forEach(checkbox => {
+                    checkbox.disabled = true;
+                    checkbox.checked = false;
+                });
+            } else {
+                // Если снято "Все студенты", включаем другие чекбоксы
+                document.querySelectorAll('input[name="audience"]:not(#audienceAll)').forEach(checkbox => {
+                    checkbox.disabled = false;
+                });
+            }
+        });
+        
+        // Обработчики для остальных быстрых действий
+        document.getElementById('addStudentBtn').addEventListener('click', function() {
+            alert('Добавление нового студента');
+        });
+        
+        document.getElementById('importBtn').addEventListener('click', function() {
+            alert('Импорт данных');
+        });
+        
+        // Обработчики для кнопок в таблицах
+        const editButtons = document.querySelectorAll('.table-btn.edit');
+        editButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const studentName = this.closest('tr').querySelector('td').textContent;
+                alert(`Редактирование данных: ${studentName}`);
+            });
+        });
+        
+        const pointsButtons = document.querySelectorAll('.table-btn.points');
+        pointsButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const studentName = this.closest('tr').querySelector('td').textContent;
+                // Открываем модальное окно баллов для конкретного студента
+                pointsModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                
+                // Устанавливаем выбранного студента в форме
+                const studentSelect = document.getElementById('studentSelect');
+                for (let i = 0; i < studentSelect.options.length; i++) {
+                    if (studentSelect.options[i].text.includes(studentName)) {
+                        studentSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            });
+        });
+        
+        const deleteButtons = document.querySelectorAll('.table-btn.delete');
+        deleteButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const studentName = this.closest('tr').querySelector('td').textContent;
+                if (confirm(`Удалить студента ${studentName}?`)) {
+                    alert(`Студент ${studentName} удален`);
+                }
+            });
+        });
+        
+        // Навигация по странице
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                
+                if (targetId.startsWith('#')) {
+                    const targetName = targetId.substring(1);
+                    
+                    let targetElement;
+                    
+                    if (targetName === 'party') {
+                        targetElement = document.querySelector('h2.section-title[id="party"]');
+                    } else if (targetName === 'students') {
+                        targetElement = document.querySelector('h2.section-title[id="students"]');
+                    } else if (targetName === 'loud') {
+                        targetElement = document.querySelector('h2.section-title[id="loud"]');
+                    } else {
+                        targetElement = document.querySelector(targetId);
+                    }
+                    
+                    if (targetElement) {
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - 80;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                }
+            });
+        });
+
+        // Добавляем обработчик для активного состояния навигации при скролле
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY + 100;
+            
+            const sections = [
+                { id: '', element: document.querySelector('.page-title') },
+                { id: 'loud', element: document.querySelector('h2.section-title[id="loud"]') },
+                { id: 'students', element: document.querySelector('h2.section-title[id="students"]') },
+                { id: 'party', element: document.querySelector('h2.section-title[id="party"]') }
+            ];
+            
+            let currentSection = '';
+            sections.forEach(section => {
+                if (section.element) {
+                    const sectionTop = section.element.offsetTop;
+                    const sectionHeight = section.element.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight + 100) {
+                        currentSection = section.id;
+                    }
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const linkHref = link.getAttribute('href');
+                
+                if (currentSection === '' && linkHref === '#') {
+                    link.classList.add('active');
+                } else if (linkHref === `#${currentSection}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Установка сегодняшней даты в формы при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('pointsDate').value = today;
+            document.getElementById('announcementDate').value = today;
+            
+            // Инициализация чекбоксов аудитории
+            document.getElementById('audienceAll').checked = true;
+            document.querySelectorAll('input[name="audience"]:not(#audienceAll)').forEach(checkbox => {
+                checkbox.disabled = true;
+            });
+        });
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+        window.location.href = 'avtorizatia.html';
+        });
+    </script>
+</body>
+</html>

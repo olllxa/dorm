@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель управления - Студенческий совет</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.5;
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 260px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            padding: 24px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 24px 24px 24px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 24px;
+        }
+        
+        .logo h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .role-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: #8f0d0d;
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+            padding: 0 16px;
+            margin-bottom: 24px;
+        }
+        
+        .nav-item {
+            margin-bottom: 4px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #4a4a4a;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover {
+            background-color: #f0f0f0;
+            color: #1a1a1a;
+        }
+        
+        .nav-link.active {
+            background-color: #8f0d0d;
+            color: white;
+        }
+        
+        .user-info {
+            padding: 24px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: auto;
+        }
+        
+        .user-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #8f0d0d;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 16px;
+            margin-right: 12px;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .user-role {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .logout-btn {
+            width: 100%;
+            padding: 10px 16px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            color: #666;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .page-subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+        
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Быстрые действия */
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .action-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .action-card:hover {
+            border-color: #8f0d0d;
+            background-color: #f8f9fa;
+        }
+        
+        .action-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #1a1a1a;
+        }
+        
+        .action-desc {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Управление */
+        .management-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+            color: #333;
+        }
+        
+        .btn-primary {
+            background-color: #8f0d0d;
+            color: white;
+            border-color: #8f0d0d;
+        }
+        
+        .btn-primary:hover {
+            background-color: #8f0d0d;
+            border-color: #8f0d0d;
+        }
+        
+        .btn-secondary {
+            background-color: #f8f9fa;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #f0f0f0;
+        }
+        
+        /* Фильтры */
+        .filters {
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            flex: 1;
+            min-width: 180px;
+        }
+        
+        .filter-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .filter-input, .filter-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+        
+        .filter-input:focus, .filter-select:focus {
+            outline: none;
+            border-color: #8f0d0d;
+        }
+        
+        /* Таблицы */
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background-color: #f8f9fa;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #666;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .table-btn {
+            padding: 6px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            background-color: white;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .table-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .table-btn.edit {
+            color: #f57c00;
+            border-color: #f57c00;
+        }
+        
+        .table-btn.points {
+            color: #28a745;
+            border-color: #28a745;
+        }
+        
+        .table-btn.view {
+            color: #8f0d0d;
+            border-color: #8f0d0d;
+        }
+        
+        .points-display {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #8f0d0d;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* Блок информации о студенте */
+        .student-info {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .student-info-row {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .student-info-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: #666;
+        }
+        
+        .student-info-value {
+            color: #333;
+        }
+        
+        /* История баллов */
+        .points-history {
+            margin-top: 20px;
+        }
+        
+        .history-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-date {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .history-reason {
+            flex: 1;
+            margin: 0 16px;
+        }
+        
+        .history-points {
+            font-weight: 500;
+        }
+        
+        .points-add {
+            color: #28a745;
+        }
+        
+        .points-subtract {
+            color: #e74c3c;
+        }
+        
+        /* Ограничения доступа */
+        .access-restricted {
+            background-color: #fef5e7;
+            border: 1px solid #f39c12;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .restricted-icon {
+            font-size: 24px;
+            color: #f39c12;
+        }
+        
+        .restricted-text h4 {
+            color: #d35400;
+            margin-bottom: 4px;
+        }
+        
+        .restricted-text p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .main-content {
+                margin-left: 240px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 16px;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .section-actions {
+                width: 100%;
+            }
+            
+            .btn {
+                flex: 1;
+            }
+            
+            .actions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .filter-row {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .student-info-row {
+                flex-direction: column;
+                margin-bottom: 8px;
+            }
+            
+            .student-info-label {
+                min-width: auto;
+                margin-bottom: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Панель студсовета</h1>
+            <div class="role-badge">Представитель студсовета</div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#events" class="nav-link">Мероприятия</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#students" class="nav-link">Студенты</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#announcements" class="nav-link">Объявления</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reports" class="nav-link">Отчеты</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="user-info">
+            <div class="user-header">
+                <div class="user-avatar">ИС</div>
+                <div class="user-details">
+                    <div class="user-name">Иванов Сергей</div>
+                    <div class="user-role">Представитель студсовета ДАС-8</div>
+                </div>
+            </div>
+            <button class="logout-btn" id="logoutBtn">Выйти</button>
+        </div>
+    </aside>
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        <h1 class="page-title">Панель управления студсовета</h1>
+        <p class="page-subtitle">Управление мероприятиями и баллами студентов общежития №3</p>
+        
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">148</div>
+                <div class="stat-label">Всего студентов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Активных мероприятий</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">24</div>
+                <div class="stat-label">Заявок на участие</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">964</div>
+                <div class="stat-label">Баллов начислено за месяц</div>
+            </div>
+        </div>
+
+        <!-- Быстрые действия -->
+        <h2 class="section-title">Быстрые действия</h2>
+        <div class="actions-grid">
+            <div class="action-card" id="viewEventsBtn">
+                <div class="action-title">Просмотр мероприятий</div>
+                <div class="action-desc">Текущие и запланированные мероприятия</div>
+            </div>
+            
+            <div class="action-card" id="managePointsBtn">
+                <div class="action-title">Управление баллами</div>
+                <div class="action-desc">Начислить или списать баллы студентам</div>
+            </div>
+            
+            <div class="action-card" id="viewReportsBtn">
+                <div class="action-title">Посмотреть отчеты</div>
+                <div class="action-desc">Статистика по баллам и активности</div>
+            </div>
+            
+            <div class="action-card" id="createAnnouncementBtn">
+                <div class="action-title">Создать объявление</div>
+                <div class="action-desc">Опубликовать объявление для студентов</div>
+            </div>
+        </div>
+
+        <!-- Управление студентами -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title" id="students">Управление студентами</h2>
+                <div class="section-actions">
+                    <button class="btn btn-secondary" id="exportBtn">Экспорт</button>
+                    <button class="btn btn-primary" id="filterBtn">Фильтровать</button>
+                </div>
+            </div>
+            <div class="filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label class="filter-label">Общежитие</label>
+                        <select class="filter-select" id="dormitoryFilter">
+                            <option>Все общежития</option>
+                            <option>ДАС-8</option>
+                            <option>ДАС-9</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Группа</label>
+                        <select class="filter-select" id="groupFilter">
+                            <option>Все группы</option>
+                            <option>0907-21</option>
+                            <option>0907-22</option>
+                            <option>0907-31</option>
+                            <option>0907-32</option>
+                            <option>1812-32</option>
+                            <option>1815-21</option>
+                            <option>1815-31</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Сортировка по баллам</label>
+                        <select class="filter-select" id="sortFilter">
+                            <option value="desc">По убыванию</option>
+                            <option value="asc">По возрастанию</option>
+                            <option value="name">По имени</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">&nbsp;</label>
+                        <button class="btn btn-primary" id="applyFiltersBtn" style="width: 100%; height: 40px;">Применить</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ФИО студента</th>
+                            <th>Общежитие</th>
+                            <th>Группа</th>
+                            <th>Блок/Комната</th>
+                            <th>Баллы</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Кляшторная Ольга Антоновна</td>
+                            <td>ДАС-8</td>
+                            <td>0907-31</td>
+                            <td>3/2</td>
+                            <td class="points-display"><strong>127</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view" data-student="1">Профиль</button>
+                                    <button class="table-btn points" data-student="1">Баллы</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Титова Яна Андреевна</td>
+                            <td>ДАС-8</td>
+                            <td>1812-32</td>
+                            <td>4/1</td>
+                            <td class="points-display"><strong>85</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view" data-student="2">Профиль</button>
+                                    <button class="table-btn points" data-student="2">Баллы</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Зайцев Данил Александрович</td>
+                            <td>ДАС-9</td>
+                            <td>1815-21</td>
+                            <td>9/4</td>
+                            <td class="points-display"><strong>110</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view" data-student="3">Профиль</button>
+                                    <button class="table-btn points" data-student="3">Баллы</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Кузнецов Дмитрий Алексеевич</td>
+                            <td>ДАС-9</td>
+                            <td>0907-22</td>
+                            <td>7/2</td>
+                            <td class="points-display"><strong>92</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view" data-student="4">Профиль</button>
+                                    <button class="table-btn points" data-student="4">Баллы</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Петрова Анна Сергеевна</td>
+                            <td>ДАС-8</td>
+                            <td>0907-32</td>
+                            <td>5/3</td>
+                            <td class="points-display"><strong>78</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view" data-student="5">Профиль</button>
+                                    <button class="table-btn points" data-student="5">Баллы</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Смирнов Илья Владимирович</td>
+                            <td>ДАС-9</td>
+                            <td>1815-31</td>
+                            <td>8/2</td>
+                            <td class="points-display"><strong>145</strong></td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view" data-student="6">Профиль</button>
+                                    <button class="table-btn points" data-student="6">Баллы</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Мероприятия -->
+        <section class="management-section">
+            <div class="section-header">
+                <h2 class="section-title" id="events">Мероприятия</h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary" id="viewAllEventsBtn">Все мероприятия</button>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Название</th>
+                            <th>Дата</th>
+                            <th>Баллы</th>
+                            <th>Статус</th>
+                            <th>Участников</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Субботник на территории</td>
+                            <td>15.11.2024 10:00</td>
+                            <td>+15</td>
+                            <td><span style="color: #f39c12; font-weight: 500;">Идёт запись</span></td>
+                            <td>28</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view">Подробнее</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Конкурс талантов</td>
+                            <td>15.02.2025 17:00</td>
+                            <td>+25</td>
+                            <td><span style="color: #7f8c8d; font-weight: 500;">Планируется</span></td>
+                            <td>15</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view">Подробнее</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>День студента</td>
+                            <td>25.01.2025 18:00</td>
+                            <td>+10</td>
+                            <td><span style="color: #7f8c8d; font-weight: 500;">Планируется</span></td>
+                            <td>0</td>
+                            <td>
+                                <div class="table-actions">
+                                    <button class="table-btn view">Подробнее</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Модальное окно управления баллами -->
+    <div class="modal" id="pointsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Управление баллами студента</div>
+                <button class="modal-close" id="closePointsModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="student-info" id="studentInfo">
+                    <!-- Информация о студенте будет загружена динамически -->
+                </div>
+                
+                <form id="pointsForm">
+                    <input type="hidden" id="studentId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Тип операции *</label>
+                            <select class="form-input" id="operationType" required>
+                                <option value="add">Начислить баллы</option>
+                                <option value="subtract">Списать баллы</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Количество баллов *</label>
+                            <input type="number" class="form-input" id="pointsAmount" min="1" max="100" value="10" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Причина операции *</label>
+                        <select class="form-input" id="pointsReason" required>
+                            <option value="">-- Выберите причину --</option>
+                            <option value="event">Участие в мероприятии</option>
+                            <option value="duty">Выполнение дежурства</option>
+                            <option value="initiative">Общественная инициатива</option>
+                            <option value="help">Помощь другим студентам</option>
+                            <option value="violation">Нарушение правил</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Описание</label>
+                        <textarea class="form-input" id="pointsDescription" rows="3" placeholder="Подробное описание причины начисления/списания баллов..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Дата операции</label>
+                        <input type="date" class="form-input" id="pointsDate">
+                    </div>
+                    
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Выполнить операцию</button>
+                        <button type="button" class="btn" id="cancelPointsModal" style="flex: 1;">Отмена</button>
+                    </div>
+                </form>
+                
+                <div class="points-history" id="pointsHistory">
+                    <h4 style="margin-bottom: 15px;">История операций</h4>
+                    <div class="history-item">
+                        <div class="history-date">10.11.2024</div>
+                        <div class="history-reason">Участие в субботнике</div>
+                        <div class="history-points points-add">+15</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-date">05.11.2024</div>
+                        <div class="history-reason">Помощь в организации мероприятия</div>
+                        <div class="history-points points-add">+10</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-date">01.11.2024</div>
+                        <div class="history-reason">Нарушение тишины после 23:00</div>
+                        <div class="history-points points-subtract">-5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно профиля студента -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Профиль студента</div>
+                <button class="modal-close" id="closeProfileModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="student-info">
+                    <div class="student-info-row">
+                        <div class="student-info-label">ФИО:</div>
+                        <div class="student-info-value" id="profileName">Кляшторная Ольга Антоновна</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Общежитие:</div>
+                        <div class="student-info-value" id="profileDorm">ДАС-8</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Группа:</div>
+                        <div class="student-info-value" id="profileGroup">0907-31</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Комната:</div>
+                        <div class="student-info-value" id="profileRoom">3/2</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Телефон:</div>
+                        <div class="student-info-value" id="profilePhone">+7 (900) 123-45-67</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Текущие баллы:</div>
+                        <div class="student-info-value" id="profilePoints" style="font-weight: 600; color: #2c3e50;">127</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Рейтинг:</div>
+                        <div class="student-info-value" id="profileRating">15 место из 148</div>
+                    </div>
+                </div>
+                
+                <div class="points-history">
+                    <h4 style="margin-bottom: 15px;">История баллов</h4>
+                    <div class="history-item">
+                        <div class="history-date">10.11.2024</div>
+                        <div class="history-reason">Участие в субботнике</div>
+                        <div class="history-points points-add">+15</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-date">05.11.2024</div>
+                        <div class="history-reason">Помощь в организации мероприятия</div>
+                        <div class="history-points points-add">+10</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-date">01.11.2024</div>
+                        <div class="history-reason">Нарушение тишины после 23:00</div>
+                        <div class="history-points points-subtract">-5</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-date">25.10.2024</div>
+                        <div class="history-reason">Активность в студсовете</div>
+                        <div class="history-points points-add">+20</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-date">20.10.2024</div>
+                        <div class="history-reason">Поздняя сдача комнаты</div>
+                        <div class="history-points points-subtract">-8</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <button class="btn btn-primary" id="managePointsFromProfile">Управление баллами</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Выход из системы
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Вы уверены, что хотите выйти из панели управления?')) {
+                alert('Вы успешно вышли из системы.');
+                window.location.href = 'index.html';
+            }
+        });
+        
+        // Данные студентов
+        const studentsData = {
+            1: {
+                name: "Кляшторная Ольга Антоновна",
+                dorm: "ДАС-8",
+                group: "0907-31",
+                room: "3/2",
+                phone: "+7 (900) 123-45-67",
+                points: 127,
+                rating: "15 место из 148"
+            },
+            2: {
+                name: "Титова Яна Андреевна",
+                dorm: "ДАС-8",
+                group: "1812-32",
+                room: "4/1",
+                phone: "+7 (900) 234-56-78",
+                points: 85,
+                rating: "42 место из 148"
+            },
+            3: {
+                name: "Зайцев Данил Александрович",
+                dorm: "ДАС-9",
+                group: "1815-21",
+                room: "9/4",
+                phone: "+7 (900) 345-67-89",
+                points: 110,
+                rating: "25 место из 148"
+            },
+            4: {
+                name: "Кузнецов Дмитрий Алексеевич",
+                dorm: "ДАС-9",
+                group: "0907-22",
+                room: "7/2",
+                phone: "+7 (900) 456-78-90",
+                points: 92,
+                rating: "35 место из 148"
+            },
+            5: {
+                name: "Петрова Анна Сергеевна",
+                dorm: "ДАС-8",
+                group: "0907-32",
+                room: "5/3",
+                phone: "+7 (900) 567-89-01",
+                points: 78,
+                rating: "52 место из 148"
+            },
+            6: {
+                name: "Смирнов Илья Владимирович",
+                dorm: "ДАС-9",
+                group: "1815-31",
+                room: "8/2",
+                phone: "+7 (900) 678-90-12",
+                points: 145,
+                rating: "8 место из 148"
+            }
+        };
+        
+        // Модальные окна
+        const pointsModal = document.getElementById('pointsModal');
+        const profileModal = document.getElementById('profileModal');
+        let currentStudentId = null;
+        
+        // Закрытие модальных окон
+        document.getElementById('closePointsModal').addEventListener('click', closePointsModal);
+        document.getElementById('cancelPointsModal').addEventListener('click', closePointsModal);
+        document.getElementById('closeProfileModal').addEventListener('click', closeProfileModal);
+        
+        // Закрытие при клике вне окна
+        window.addEventListener('click', function(event) {
+            if (event.target === pointsModal) closePointsModal();
+            if (event.target === profileModal) closeProfileModal();
+        });
+        
+        function closePointsModal() {
+            pointsModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        function closeProfileModal() {
+            profileModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Обработка кнопки "Управление баллами" из быстрых действий
+        document.getElementById('managePointsBtn').addEventListener('click', function() {
+            pointsModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('studentId').value = '';
+            document.getElementById('studentInfo').innerHTML = `
+                <div class="student-info-row">
+                    <div class="student-info-label">Выберите студента:</div>
+                    <div class="student-info-value">Для работы с баллами выберите студента из таблицы</div>
+                </div>
+            `;
+            document.getElementById('pointsForm').reset();
+            document.getElementById('pointsDate').value = new Date().toISOString().split('T')[0];
+        });
+        
+        // Обработка кнопок "Баллы" в таблице
+        document.querySelectorAll('.table-btn.points').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const studentId = this.getAttribute('data-student');
+                currentStudentId = studentId;
+                const student = studentsData[studentId];
+                
+                // Заполняем информацию о студенте
+                document.getElementById('studentInfo').innerHTML = `
+                    <div class="student-info-row">
+                        <div class="student-info-label">Студент:</div>
+                        <div class="student-info-value"><strong>${student.name}</strong></div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Общежитие/Группа:</div>
+                        <div class="student-info-value">${student.dorm}, ${student.group}</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Комната:</div>
+                        <div class="student-info-value">${student.room}</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Текущие баллы:</div>
+                        <div class="student-info-value" style="font-weight: 600; color: #2c3e50;">${student.points}</div>
+                    </div>
+                `;
+                
+                document.getElementById('studentId').value = studentId;
+                document.getElementById('pointsForm').reset();
+                document.getElementById('pointsDate').value = new Date().toISOString().split('T')[0];
+                
+                pointsModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Обработка кнопок "Профиль" в таблице
+        document.querySelectorAll('.table-btn.view').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const studentId = this.getAttribute('data-student');
+                const student = studentsData[studentId];
+                
+                // Заполняем профиль студента
+                document.getElementById('profileName').textContent = student.name;
+                document.getElementById('profileDorm').textContent = student.dorm;
+                document.getElementById('profileGroup').textContent = student.group;
+                document.getElementById('profileRoom').textContent = student.room;
+                document.getElementById('profilePhone').textContent = student.phone;
+                document.getElementById('profilePoints').textContent = student.points;
+                document.getElementById('profileRating').textContent = student.rating;
+                
+                profileModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Обработка кнопки "Управление баллами" из профиля
+        document.getElementById('managePointsFromProfile').addEventListener('click', function() {
+            closeProfileModal();
+            
+            // Находим ID студента по имени из профиля
+            const studentName = document.getElementById('profileName').textContent;
+            let studentId = null;
+            
+            for (const id in studentsData) {
+                if (studentsData[id].name === studentName) {
+                    studentId = id;
+                    break;
+                }
+            }
+            
+            if (studentId) {
+                const student = studentsData[studentId];
+                
+                document.getElementById('studentInfo').innerHTML = `
+                    <div class="student-info-row">
+                        <div class="student-info-label">Студент:</div>
+                        <div class="student-info-value"><strong>${student.name}</strong></div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Общежитие/Группа:</div>
+                        <div class="student-info-value">${student.dorm}, ${student.group}</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Комната:</div>
+                        <div class="student-info-value">${student.room}</div>
+                    </div>
+                    <div class="student-info-row">
+                        <div class="student-info-label">Текущие баллы:</div>
+                        <div class="student-info-value" style="font-weight: 600; color: #2c3e50;">${student.points}</div>
+                    </div>
+                `;
+                
+                document.getElementById('studentId').value = studentId;
+                document.getElementById('pointsForm').reset();
+                document.getElementById('pointsDate').value = new Date().toISOString().split('T')[0];
+                
+                pointsModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        });
+        
+        // Обработка формы баллов
+        document.getElementById('pointsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const studentId = document.getElementById('studentId').value;
+            const operationType = document.getElementById('operationType').value;
+            const pointsAmount = parseInt(document.getElementById('pointsAmount').value);
+            const reason = document.getElementById('pointsReason').value;
+            const description = document.getElementById('pointsDescription').value;
+            
+            if (!studentId) {
+                alert('Пожалуйста, выберите студента для выполнения операции');
+                return;
+            }
+            
+            const student = studentsData[studentId];
+            const studentName = student.name;
+            
+            // В реальном приложении здесь была бы отправка данных на сервер
+            const operationText = operationType === 'add' ? 'начислено' : 'списано';
+            
+            alert(`Успешно ${operationText} ${pointsAmount} баллов студенту ${studentName}\nПричина: ${reason}`);
+            
+            // Обновляем баллы в таблице (в демо-версии)
+            const row = document.querySelector(`.table-btn.points[data-student="${studentId}"]`).closest('tr');
+            const pointsCell = row.querySelector('.points-display strong');
+            let currentPoints = parseInt(pointsCell.textContent);
+            
+            if (operationType === 'add') {
+                currentPoints += pointsAmount;
+            } else {
+                currentPoints -= pointsAmount;
+                if (currentPoints < 0) currentPoints = 0;
+            }
+            
+            pointsCell.textContent = currentPoints;
+            
+            closePointsModal();
+            this.reset();
+            document.getElementById('pointsDate').value = new Date().toISOString().split('T')[0];
+        });
+        
+        // Фильтрация студентов
+        document.getElementById('applyFiltersBtn').addEventListener('click', function() {
+            const dormitory = document.getElementById('dormitoryFilter').value;
+            const group = document.getElementById('groupFilter').value;
+            const sort = document.getElementById('sortFilter').value;
+            
+            // В реальном приложении здесь была бы отправка запроса на сервер
+            alert(`Фильтры применены:\nОбщежитие: ${dormitory}\nГруппа: ${group}\nСортировка: ${sort}`);
+        });
+        
+        // Обработка быстрых действий
+        document.getElementById('viewEventsBtn').addEventListener('click', function() {
+            alert('Переход к просмотру мероприятий');
+            // Прокрутка к разделу мероприятий
+            document.getElementById('events').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        document.getElementById('viewReportsBtn').addEventListener('click', function() {
+            alert('Просмотр отчетов по активности студентов');
+        });
+        
+        document.getElementById('createAnnouncementBtn').addEventListener('click', function() {
+            alert('Создание нового объявления для студентов');
+        });
+        
+        document.getElementById('viewAllEventsBtn').addEventListener('click', function() {
+            alert('Просмотр всех мероприятий');
+        });
+        
+        // Навигация по странице
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Удаляем активный класс у всех ссылок
+                navLinks.forEach(l => l.classList.remove('active'));
+                // Добавляем активный класс текущей ссылке
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href');
+                
+                if (targetId.startsWith('#')) {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - 80;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        });
+        
+        // Установка сегодняшней даты при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('pointsDate').value = new Date().toISOString().split('T')[0];
+        });
+        
+        // Показать сообщение об ограничении доступа при попытке добавления студента
+        document.getElementById('addStudentBtn')?.addEventListener('click', function() {
+            alert('Добавление студентов недоступно для представителей студсовета. Пожалуйста, обратитесь к коменданту.');
+        });
+    </script>
+</body>
+</html>
